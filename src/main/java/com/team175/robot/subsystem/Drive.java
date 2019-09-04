@@ -1,8 +1,13 @@
 package com.team175.robot.subsystem;
 
+import com.team175.robot.util.DriveHelper;
 import com.team175.robot.util.PeriodicTask;
+import com.team175.robot.util.model.motorcontroller.MotorController;
 
 public class Drive extends Subsystem {
+
+    private final MotorController leftMaster, leftSlave, rightMaster, rightSlave;
+    private final DriveHelper driveHelper;
 
     private static Drive instance;
 
@@ -30,7 +35,11 @@ public class Drive extends Subsystem {
     }
 
     private Drive() {
-
+        leftMaster = null;
+        leftSlave = null;
+        rightMaster = null;
+        rightSlave = null;
+        driveHelper = null;
     }
 
     public static Drive getInstance() {

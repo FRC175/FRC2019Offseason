@@ -1,7 +1,7 @@
 package com.team175.robot.util.model.motorcontroller;
 
 /**
- * Holds PID gains (Kp, Ki, Kd, Kf) and acceleration and cruise velocity data for closed loop control.
+ * Gains holds PID gains (Kp, Ki, Kd, Kf) and acceleration and cruise velocity data for closed loop control.
  */
 public final class Gains {
 

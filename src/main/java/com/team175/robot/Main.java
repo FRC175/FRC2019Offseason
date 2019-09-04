@@ -3,7 +3,7 @@ package com.team175.robot;
 import edu.wpi.first.wpilibj.RobotBase;
 
 /**
- * Starting point for the robot software.
+ * Main is the starting point for the robot software.
  * Do NOT add any static variables to this class, or any initialization at all.  Unless you know what you are doing,
  * do not modify this file except to change the parameter class to the startRobot call.
  */

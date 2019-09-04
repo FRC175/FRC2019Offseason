@@ -9,16 +9,16 @@ import com.team175.robot.util.model.motorcontroller.MotorController;
 public final class DriveHelper {
 
     /**
-     * The Talon SRXs
+     * Motor controllers
      */
     private MotorController left, right;
 
     /**
-     * The Cheesy Drive variables
+     * Cheesy Drive variables
      */
-    private double oldWheel = 0.0;
-    private double quickStopAccumulator = 0.0;
-    private double negInertiaAccumulator = 0.0;
+    private double oldWheel = 0;
+    private double quickStopAccumulator = 0;
+    private double negInertiaAccumulator = 0;
 
     // These factors determine how fast the wheel traverses the "non linear" sine curve.
     private static final double HIGH_WHEEL_NON_LINEARITY = 0.65;
@@ -165,6 +165,8 @@ public final class DriveHelper {
 
     /**
      * An alternative way of performing arcade drive.
+     *
+     * TODO: Remove
      */
     public void altAcradeDrive(double throttle, double turn) {
         left.set(MCControlMode.PERCENT_OUT, limit(throttle + turn, 1));
