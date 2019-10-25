@@ -1,8 +1,15 @@
 package com.team175.robot.subsystem;
 
 import com.team175.robot.util.PeriodicTask;
+import com.team175.robot.util.PeriodicTaskRunner;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Subsystem is the base for all the different subsystems that make up the robot. The base for all of the different
@@ -21,6 +28,53 @@ public abstract class Subsystem {
     protected final Logger logger = LoggerFactory.getLogger(getClass().getSimpleName());
 
     /**
+     * Map for holding telemetry data of a subsystem. Meant to be defined in individual subsystem.
+     */
+    protected final Map<String, Supplier> telemetry = new LinkedHashMap<>();
+
+    /**
+     * A subsystem's finite state machine. Run periodically in autonomous and teleop using a {@link PeriodicTaskRunner}.
+     */
+    protected PeriodicTask stateMachine = new PeriodicTask() {
+        @Override
+        public void start() {
+        }
+
+        @Override
+        public void periodic() {
+        }
+
+        @Override
+        public void stop() {
+        }
+    };
+
+    /**
+     * Shuffleboard tab for a subsystem that is used to send its telemetry data
+     */
+    private final ShuffleboardTab dashboardTab = Shuffleboard.getTab(getClass().getSimpleName());
+
+    /**
+     * Sends the telemetry map to the dashboard.
+     */
+    public void outputToDashboard() {
+        if (!telemetry.isEmpty()) {
+            telemetry.forEach((key, value) -> {
+                dashboardTab.add(key, value.get());
+            });
+        }
+    }
+
+    /**
+     * Returns the finite state machine of a subsystem.
+     *
+     * @return Subsystem's state machine
+     */
+    public PeriodicTask getStateMachine() {
+        return stateMachine;
+    }
+
+    /**
      * Resets the sensors of a subsystem to their initial values (e.g., set encoders to zero units).
      */
     public abstract void resetSensors();
@@ -31,14 +85,5 @@ public abstract class Subsystem {
      * @return Whether the subsystem passed all the tests
      */
     public abstract boolean checkIntegrity();
-
-    /**
-     * Returns the finite state machine of a subsystem in the form of a {@link PeriodicTask}.
-     *
-     * @return Subsystem's state machine
-     */
-    public abstract PeriodicTask getStateMachine();
-
-    // public abstract String getTelemetry();
 
 }
