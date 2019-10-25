@@ -6,6 +6,10 @@ import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+
 /**
  * AldrinTalonSRX is a wrapper around the TalonSRX that implements {@link MotorController} in order to use the Talon SRX
  * and the Spark Max in a similar fashion.
@@ -14,11 +18,38 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
  */
 public class AldrinTalonSRX extends TalonSRX implements MotorController {
 
-    private Gains gains;
-    private double setpoint;
+    private double setpoint = 0;
+    private Gains gains = new Gains(0, 0, 0, 0, 0,0);
+
+    private final Map<String, Supplier> telemetry = new LinkedHashMap<>();
+    private final String name;
 
     public AldrinTalonSRX(int deviceID) {
+        this(deviceID, "TalonSRX" + deviceID);
+    }
+
+    public AldrinTalonSRX(int deviceID, String name) {
         super(deviceID);
+        this.name = name;
+        configureTelemetry();
+    }
+
+    private void configureTelemetry() {
+        telemetry.put(name + "MotorOut", this::getPercentOut);
+        telemetry.put(name + "Position", this::getPosition);
+        telemetry.put(name + "Velocity", this::getVelocity);
+        telemetry.put(name + "Voltage", this::getVoltage);
+        telemetry.put(name + "Current", this::getCurrent);
+        telemetry.put(name + "Setpoint", this::getSetpoint);
+        telemetry.put(name + "SetpointError", this::getSetpointError);
+        telemetry.put(name + "DeviceID", this::getDeviceID);
+        telemetry.put(name + "IsInverted", super::getInverted);
+        telemetry.put(name + "Kp", () -> getGains().getKp());
+        telemetry.put(name + "Ki", () -> getGains().getKi());
+        telemetry.put(name + "Kd", () -> getGains().getKd());
+        telemetry.put(name + "Kf", () -> getGains().getKf());
+        telemetry.put(name + "MotionAcceleration", () -> getGains().getAcceleration());
+        telemetry.put(name + "CruiseVelocity", () -> getGains().getCruiseVelocity());
     }
 
     @Deprecated
@@ -130,6 +161,16 @@ public class AldrinTalonSRX extends TalonSRX implements MotorController {
     public boolean checkIntegrity() {
         // TODO: Implement
         return false;
+    }
+
+    @Override
+    public Map<String, Supplier> getTelemetry() {
+        return telemetry;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
 }

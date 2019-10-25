@@ -6,7 +6,7 @@ import com.team175.robot.util.model.control.DriverStick;
 import com.team175.robot.util.model.control.OperatorStick;
 
 /**
- * ControlManager manages all the controls of the robot and their respective actions.
+ * ControlManager manages all the controls of the robot and its respective actions.
  */
 public final class ControlManager implements PeriodicTask {
 

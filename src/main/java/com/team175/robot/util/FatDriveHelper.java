@@ -1,17 +1,17 @@
 package com.team175.robot.util;
 
-import com.team175.robot.util.model.motorcontroller.MCControlMode;
-import com.team175.robot.util.model.motorcontroller.MotorController;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 /**
- * DriveHelper implements multiple different drive types (e.g., Cheesy Drive and Arcade Drive) to run on motor controllers.
+ * DriveHelper except it's morbidly obese.
  */
-public final class DriveHelper {
+public final class FatDriveHelper {
 
     /**
      * Motor controllers
      */
-    private MotorController left, right;
+    private TalonSRX left, right;
 
     /**
      * Cheesy Drive variables
@@ -40,7 +40,7 @@ public final class DriveHelper {
      * @param left  The master motor controller for the left drive motors
      * @param right The master motor controller for the right drive motors
      */
-    public DriveHelper(MotorController left, MotorController right) {
+    public FatDriveHelper(TalonSRX left, TalonSRX right) {
         this.left = left;
         this.right = right;
     }
@@ -149,16 +149,16 @@ public final class DriveHelper {
             rightPwm = -1.0;
         }
 
-        left.set(MCControlMode.PERCENT_OUT, leftPwm);
-        right.set(MCControlMode.PERCENT_OUT, rightPwm);
+        left.set(ControlMode.PercentOutput, leftPwm);
+        right.set(ControlMode.PercentOutput, rightPwm);
     }
 
     /**
      * Arcade drive using arbitrary feed forward.
      */
     public void arcadeDrive(double throttle, double turn) {
-        left.set(MCControlMode.PERCENT_OUT, throttle, turn);
-        right.set(MCControlMode.PERCENT_OUT, throttle, -turn);
+        left.set(ControlMode.PercentOutput, throttle, turn);
+        right.set(ControlMode.PercentOutput, throttle, -turn);
     }
 
     /**
@@ -167,8 +167,8 @@ public final class DriveHelper {
      * TODO: Remove
      */
     public void altAcradeDrive(double throttle, double turn) {
-        left.set(MCControlMode.PERCENT_OUT, limit(throttle + turn, 1));
-        right.set(MCControlMode.PERCENT_OUT, limit(throttle - turn, 1));
+        left.set(ControlMode.PercentOutput, limit(throttle + turn, 1));
+        right.set(ControlMode.PercentOutput, limit(throttle - turn, 1));
     }
 
     /**
@@ -206,15 +206,15 @@ public final class DriveHelper {
             }
         }
 
-        left.set(MCControlMode.PERCENT_OUT, limit(leftMotorOutput, 1));
-        right.set(MCControlMode.PERCENT_OUT, limit(rightMotorOutput, 1));
+        left.set(ControlMode.PercentOutput, limit(leftMotorOutput, 1));
+        right.set(ControlMode.PercentOutput, limit(rightMotorOutput, 1));
     }
 
     /**
      * Forces robot to drive straight by using gyro. Must be using Pigeon gyro with tuned auxiliary PID.
      */
     /*public void straightDrive(double throttle) {
-        right.set(MCControlMode.PERCENT_OUT, throttle, DemandType.AuxPID, 0); // 0 degrees => straight
+        right.set(ControlMode.PercentOutput, throttle, DemandType.AuxPID, 0); // 0 degrees => straight
         left.follow(right, FollowerType.AuxOutput1);
     }*/
 

@@ -2,6 +2,9 @@ package com.team175.robot.util.model.motorcontroller;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
+import java.util.Map;
+import java.util.function.Supplier;
+
 /**
  * MotorController is the base for a motor controller. It is intended to abstract control of motor controllers from
  * different vendors (e.g., Talon SRX, Victor SPX, and SPARK MAX).
@@ -57,5 +60,7 @@ public interface MotorController {
     int getDeviceID();
 
     boolean checkIntegrity();
+
+    Map<String, Supplier> getTelemetry();
 
 }

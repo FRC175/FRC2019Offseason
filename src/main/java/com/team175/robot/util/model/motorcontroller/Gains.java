@@ -2,6 +2,8 @@ package com.team175.robot.util.model.motorcontroller;
 
 /**
  * Gains holds PID gains (Kp, Ki, Kd, Kf) and acceleration and cruise velocity data for closed loop control.
+ *
+ * TODO: Determine if this would be useful since Spark Max uses different gains
  */
 public final class Gains {
 
