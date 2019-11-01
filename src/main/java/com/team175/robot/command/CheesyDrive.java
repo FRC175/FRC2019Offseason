@@ -1,26 +1,35 @@
 package com.team175.robot.command;
 
 import com.team175.robot.subsystem.Drive;
-import edu.wpi.first.wpilibj.command.Command;
 
-public class CheesyDrive extends Command {
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 
-    public CheesyDrive(Drive drive) {
-        // requires(drive);
+/**
+ * CheesyDrive
+ */
+public class CheesyDrive extends CommandBase {
+
+    private final Drive drive;
+    private final DoubleSupplier throttle;
+    private final DoubleSupplier turn;
+    private final BooleanSupplier isQuickTurn;
+
+    public CheesyDrive(Drive drive, DoubleSupplier throttle, DoubleSupplier turn, BooleanSupplier isQuickTurn) {
+        this.drive = drive;
+        this.throttle = throttle;
+        this.turn = turn;
+        this.isQuickTurn = isQuickTurn;
+        addRequirements(this.drive);
     }
 
     @Override
-    protected void execute() {
-        Drive.getInstance().arcadeDrive(0, 0);
+    public void execute() {
+        drive.cheesyDrive(throttle.getAsDouble(), turn.getAsDouble(), isQuickTurn.getAsBoolean());
     }
 
     @Override
-    protected boolean isFinished() {
-        return false;
-    }
-
-    @Override
-    protected void end() {
+    public void end() {
         Drive.getInstance().setOpenLoop(0,0);
     }
 

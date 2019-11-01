@@ -1,5 +1,6 @@
 package com.team175.robot.util;
 
+import com.team175.robot.util.model.PeriodicTask;
 import edu.wpi.first.wpilibj.Notifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * PeriodicTaskRunner runs one or more periodic tasks on a separate thread at a certain frequency.
  */
-public class PeriodicTaskRunner {
+public final class PeriodicTaskRunner {
 
     private final List<? extends PeriodicTask> tasks;
     private final Notifier notifier;
@@ -26,8 +27,8 @@ public class PeriodicTaskRunner {
         isRunning = false;
     }
 
-    public PeriodicTaskRunner(double period, PeriodicTask... PeriodicTasks) {
-        this(period, List.of(PeriodicTasks));
+    public PeriodicTaskRunner(double period, PeriodicTask... periodicTasks) {
+        this(period, List.of(periodicTasks));
     }
 
     public synchronized void start() {
