@@ -22,13 +22,13 @@ public class BlinkLimelightLED extends CommandBase {
     }
 
     @Override
-    public boolean isFinished() {
-        return true;
+    public void end(boolean interrupted) {
+        limelight.defaultLED();
     }
 
     @Override
-    public void end() {
-        limelight.defaultLED();
+    public boolean isFinished() {
+        return true;
     }
 
 }

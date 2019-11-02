@@ -10,6 +10,38 @@ public class AldrinXboxController extends XboxController {
 
     private final double deadband;
 
+    public enum Button {
+        LEFT_BUMPER(5),
+        RIGHT_BUMPER(6),
+        LEFT_STICK(9),
+        RIGHT_STICK(10),
+        A(1),
+        B(2),
+        X(3),
+        Y(4),
+        BACK(7),
+        START(8);
+
+        final int value;
+
+        Button(int value) {
+            this.value = value;
+        }
+    }
+
+    public enum DPad {
+        UP(0),
+        RIGHT(90),
+        DOWN(180),
+        LEFT(270);
+
+        final int value;
+
+        DPad(int value) {
+            this.value = value;
+        }
+    }
+
     /**
      * Construct an instance of an xbox controller. The controller index is the USB port on the driver station.
      *
@@ -33,8 +65,7 @@ public class AldrinXboxController extends XboxController {
     /**
      * Gets the value of an axis and accounts for deadband.
      *
-     * @param axis
-     *         The axis to read
+     * @param axis The axis to read
      * @return The value of the axis
      */
     @Override

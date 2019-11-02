@@ -1,5 +1,6 @@
 package com.team175.robot.command;
 
+import com.team175.robot.subsystem.Drive;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -8,11 +9,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class Autopilot extends CommandGroup {
 
     public Autopilot() {
-        /*try {
-            addSequential(new DriveTrajectory(Drive.getInstance(), PathfinderFRC.getTrajectory("name.left"),
-                    PathfinderFRC.getTrajectory("name.right")));
-        } catch (IOException e) {
-        }*/
+        addSequential(new DriveTrajectory(Drive.getInstance(), "EPIC"));
     }
 
 }

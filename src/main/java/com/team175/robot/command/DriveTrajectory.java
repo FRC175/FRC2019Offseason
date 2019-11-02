@@ -1,6 +1,7 @@
 package com.team175.robot.command;
 
 import com.team175.robot.subsystem.Drive;
+import jaci.pathfinder.PathfinderFRC;
 import jaci.pathfinder.Trajectory;
 
 import java.io.IOException;
@@ -11,36 +12,50 @@ import java.io.IOException;
 public class DriveTrajectory extends CommandBase {
 
     private final Drive drive;
-    private final Trajectory leftTrajectory, rightTrajectory;
 
-    public DriveTrajectory(Drive drive, Trajectory leftTrajectory, Trajectory rightTrajectory) throws IOException {
+    private Trajectory leftTrajectory, rightTrajectory;
+    private boolean isInstantiationSuccessful;
+
+    public DriveTrajectory(Drive drive, String pathName) {
         this.drive = drive;
-        this.leftTrajectory = leftTrajectory;
-        this.rightTrajectory = rightTrajectory;
+        try {
+            leftTrajectory = PathfinderFRC.getTrajectory(pathName + ".left");
+            rightTrajectory = PathfinderFRC.getTrajectory(pathName + ".right");
+            isInstantiationSuccessful = true;
+        } catch (IOException e) {
+            logger.error("FATAL ERROR! TRAJECTORY FAILED TO LOAD!", e);
+            isInstantiationSuccessful = false;
+        }
         addRequirements(this.drive);
     }
 
     @Override
     public void initialize() {
-        drive.setOpenLoop(0, 0);
-        drive.setBrakeMode(true);
-        drive.setTrajectory(leftTrajectory, rightTrajectory);
+        if (isInstantiationSuccessful) {
+            drive.setOpenLoop(0, 0);
+            drive.setBrakeMode(true);
+            drive.setTrajectory(leftTrajectory, rightTrajectory);
+        }
     }
 
     @Override
     public void execute() {
-        drive.followTrajectory();
+        if (isInstantiationSuccessful) {
+            drive.followTrajectory();
+        }
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        if (isInstantiationSuccessful) {
+            drive.setOpenLoop(0, 0);
+            drive.setBrakeMode(false);
+        }
     }
 
     @Override
     public boolean isFinished() {
-        return drive.isTrajectoryFinished();
-    }
-
-    @Override
-    public void end() {
-        drive.setOpenLoop(0, 0);
-        drive.setBrakeMode(false);
+        return !isInstantiationSuccessful || drive.isTrajectoryFinished();
     }
 
 }

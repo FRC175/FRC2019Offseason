@@ -26,7 +26,7 @@ public class ArcadeDrive extends CommandBase {
     }
 
     @Override
-    public void end() {
+    public void end(boolean interrupted) {
         drive.setOpenLoop(0,0);
     }
 

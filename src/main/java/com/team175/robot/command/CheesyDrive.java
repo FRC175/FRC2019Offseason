@@ -29,7 +29,7 @@ public class CheesyDrive extends CommandBase {
     }
 
     @Override
-    public void end() {
+    public void end(boolean interrupted) {
         Drive.getInstance().setOpenLoop(0,0);
     }
 

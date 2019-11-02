@@ -25,26 +25,22 @@ public abstract class CommandBase extends Command {
             requires(s);
     }
 
-    @Override
-    public void initialize() {
+    /**
+     * Modifies end() to be compatible with 2020 command-based rewrite.
+     *
+     * @param interrupted
+     */
+    public void end(boolean interrupted) {
     }
 
     @Override
-    public void execute() {
+    protected void end() {
+        end(false);
     }
 
     @Override
     public boolean isFinished() {
         return false;
-    }
-
-    @Override
-    public void end() {
-    }
-
-    @Override
-    protected void interrupted() {
-        end();
     }
 
 }

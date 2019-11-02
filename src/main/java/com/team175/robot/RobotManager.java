@@ -7,9 +7,10 @@ import com.team175.robot.subsystem.Limelight;
 import com.team175.robot.util.model.AldrinXboxController;
 import com.team175.robot.util.model.XboxButton;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
 
 import java.util.List;
+
+import static com.team175.robot.util.model.AldrinXboxController.*;
 
 /**
  * RobotManager
@@ -20,7 +21,7 @@ public final class RobotManager {
     private final Limelight limelight;
     private final List<SubsystemBase> subsystems;
     // private final Joystick driverStick, operatorStick;
-    private final XboxController controller;
+    private final AldrinXboxController controller;
 
     private static RobotManager instance;
 
@@ -64,18 +65,18 @@ public final class RobotManager {
     }
 
     private void configureButtons() {
-        new XboxButton(controller, XboxButton.Button.A).whenPressed(
-                // Turn off Limelight LED
-                new ConfigLimelightLED(limelight, false)
-        );
-        new XboxButton(controller, XboxButton.Button.B).whenPressed(
-                new BlinkLimelightLED(limelight)
-        );
-        new XboxButton(controller, XboxButton.Button.B).whenPressed(
+        new XboxButton(controller, DPad.UP).whenPressed(
                 // Turn on Limelight LED
                 new ConfigLimelightLED(limelight, true)
         );
-        new XboxButton(controller, XboxButton.Button.X).whenPressed(
+        new XboxButton(controller, DPad.DOWN).whenPressed(
+                // Turn off Limelight LED
+                new ConfigLimelightLED(limelight, false)
+        );
+        new XboxButton(controller, DPad.LEFT).whenPressed(
+                new BlinkLimelightLED(limelight)
+        );
+        new XboxButton(controller, Button.X).whenPressed(
                 new DriveToVisionTarget(drive, limelight)
         );
     }

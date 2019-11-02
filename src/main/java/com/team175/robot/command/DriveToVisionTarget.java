@@ -36,13 +36,13 @@ public class DriveToVisionTarget extends CommandBase {
     }
 
     @Override
-    public boolean isFinished() {
-        return limelight.isAtTarget();
+    public void end(boolean interrupted) {
+        limelight.setCameraMode(false);
     }
 
     @Override
-    public void end() {
-        limelight.setCameraMode(false);
+    public boolean isFinished() {
+        return limelight.isAtTarget();
     }
 
 }
