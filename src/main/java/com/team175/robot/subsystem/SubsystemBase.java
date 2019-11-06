@@ -1,15 +1,14 @@
 package com.team175.robot.subsystem;
 
-import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 /**
@@ -39,7 +38,7 @@ public abstract class SubsystemBase extends Subsystem {
     /**
      * Adds data to the builder from the telemetry map filtered by data type.
      *
-     * @param builder
+     * @param builder The SendableBuilder
      */
     @Override
     public void initSendable(SendableBuilder builder) {
@@ -53,9 +52,9 @@ public abstract class SubsystemBase extends Subsystem {
 
                 // All consumers are null because data is to be read-only
                 if (rawValue instanceof Double || rawValue instanceof Integer) {
-                    builder.addDoubleProperty(subKey, () -> (double) rawValue, null);
+                    builder.addDoubleProperty(subKey, (DoubleSupplier) v, null);
                 } else if (rawValue instanceof Boolean) {
-                    builder.addDoubleProperty(subKey, () -> (double) rawValue, null);
+                    builder.addBooleanProperty(subKey, (BooleanSupplier) v, null);
                 } else if (rawValue instanceof double[]) {
                     builder.addDoubleArrayProperty(subKey, v, null);
                 } else if (rawValue instanceof boolean[]) {
