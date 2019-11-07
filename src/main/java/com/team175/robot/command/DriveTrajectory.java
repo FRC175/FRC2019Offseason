@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * DriveTrajectory
  */
-public class DriveTrajectory extends CommandBase {
+public final class DriveTrajectory extends CommandBase {
 
     private final Drive drive;
 

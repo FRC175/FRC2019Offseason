@@ -5,7 +5,7 @@ import com.team175.robot.subsystem.Limelight;
 /**
  * BlinkLimelightLED blinks the Limelight LED for one second.
  */
-public class BlinkLimelightLED extends CommandBase {
+public final class BlinkLimelightLED extends CommandBase {
 
     private final Limelight limelight;
 
@@ -28,7 +28,7 @@ public class BlinkLimelightLED extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return true;
+        return super.isTimedOut();
     }
 
 }

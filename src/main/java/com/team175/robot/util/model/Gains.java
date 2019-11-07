@@ -47,7 +47,7 @@ public class Gains {
         return cruiseVelocity;
     }
 
-    public double[] toDoubleArray() {
+    public double[] toArray() {
         return new double[]{kP, kI, kD, kF, acceleration, cruiseVelocity};
     }
 

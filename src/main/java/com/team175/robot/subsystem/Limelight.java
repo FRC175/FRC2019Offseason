@@ -26,7 +26,7 @@ public final class Limelight extends SubsystemBase {
     private Limelight() {
         table = NetworkTableInstance.getDefault().getTable("limelight");
 
-        configTelemetry();
+        configureTelemetry();
     }
 
     public static Limelight getInstance() {
@@ -37,7 +37,7 @@ public final class Limelight extends SubsystemBase {
         return instance;
     }
 
-    private void configTelemetry() {
+    private void configureTelemetry() {
         telemetry.put("IsTargetDetected", this::isTargetDetected);
         telemetry.put("HorizontalOffset", this::getHorizontalOffset);
         telemetry.put("VerticalOffset", this::getVerticalOffset);
@@ -76,7 +76,7 @@ public final class Limelight extends SubsystemBase {
         return (int) table.getEntry("getpipe").getDouble(0);
     }
 
-    public void setLEDState(boolean enable) {
+    public void setLED(boolean enable) {
         table.getEntry("ledMode").setNumber(enable ? 3 : 1);
     }
 

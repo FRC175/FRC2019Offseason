@@ -24,6 +24,7 @@ public final class Drive extends SubsystemBase {
 
     private int leftSetpoint, rightSetpoint;
 
+    // TODO: Fix Talon SRX IDs
     private static final int LEFT_MASTER_PORT = 3;
     private static final int LEFT_SLAVE_PORT = 1;
     private static final int RIGHT_MASTER_PORT = 2;
@@ -103,7 +104,7 @@ public final class Drive extends SubsystemBase {
         telemetry.put("RightSetpoint", () -> rightSetpoint);
         telemetry.put("RightVelocity", this::getRightVelocity);
         telemetry.put("RightSetpointError", this::getRightSetpointError);
-        telemetry.put("Gains", GAINS::toDoubleArray);
+        telemetry.put("Gains", GAINS::toArray);
     }
 
     public void setOpenLoop(double leftDemand, double rightDemand) {

@@ -7,7 +7,7 @@ import java.util.function.DoubleSupplier;
 /**
  * ArcadeDrive
  */
-public class ArcadeDrive extends CommandBase {
+public final class ArcadeDrive extends CommandBase {
 
     private final Drive drive;
     private final DoubleSupplier throttle;

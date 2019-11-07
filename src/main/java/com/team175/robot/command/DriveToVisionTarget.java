@@ -7,37 +7,35 @@ import com.team175.robot.subsystem.Limelight;
  * DriveToTarget uses the limelight to continuously calculate the throttle and turn needed to reach the retro reflective
  * tape targets and feeds the outputs into the drive motors.
  */
-public class DriveToVisionTarget extends CommandBase {
+public final class DriveToVisionTarget extends CommandBase {
 
     private final Drive drive;
     private final Limelight limelight;
 
-    private double throttle, turn;
-
     public DriveToVisionTarget(Drive drive, Limelight limelight) {
         this.drive = drive;
         this.limelight = limelight;
-        throttle = 0;
-        turn = 0;
         addRequirements(this.drive, this.limelight);
     }
 
     @Override
     public void initialize() {
         limelight.setCameraMode(true);
+        limelight.setLED(true);
         drive.setOpenLoop(0, 0);
     }
 
     @Override
     public void execute() {
-        throttle = limelight.calculateTargetDrive()[0];
-        turn = limelight.calculateTargetDrive()[1];
-        drive.arcadeDrive(throttle, turn);
+        double[] driveSignal = limelight.calculateTargetDrive();
+        // driveSignal[0] => Throttle, driveSignal[1] => Turn
+        drive.arcadeDrive(driveSignal[0], driveSignal[1]);
     }
 
     @Override
     public void end(boolean interrupted) {
         limelight.setCameraMode(false);
+        limelight.defaultLED();
     }
 
     @Override

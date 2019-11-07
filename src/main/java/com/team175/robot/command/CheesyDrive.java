@@ -8,7 +8,7 @@ import java.util.function.DoubleSupplier;
 /**
  * CheesyDrive
  */
-public class CheesyDrive extends CommandBase {
+public final class CheesyDrive extends CommandBase {
 
     private final Drive drive;
     private final DoubleSupplier throttle;

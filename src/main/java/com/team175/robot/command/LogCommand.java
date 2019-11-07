@@ -3,7 +3,7 @@ package com.team175.robot.command;
 /**
  * LogCommand uses {@link org.slf4j.Logger} to log a debug message.
  */
-public class LogCommand extends CommandBase {
+public final class LogCommand extends CommandBase {
 
     private final String message;
 

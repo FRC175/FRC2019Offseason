@@ -25,19 +25,16 @@ public final class RobotManager {
 
     private static RobotManager instance;
 
-    private static final int DRIVER_STICK_PORT = 0;
-    private static final int OPERATOR_STICK_PORT = 1;
     private static final int CONTROLLER_PORT = 0;
-    private static final double DRIVER_STICK_DEAD_ZONE = 0.1;
-    private static final double OPERATOR_STICK_DEAD_ZONE = 0.05;
 
     private RobotManager() {
         drive = Drive.getInstance();
         limelight = Limelight.getInstance();
         subsystems = List.of(drive, limelight);
-        // driverStick = new AldrinJoystick(DRIVER_STICK_PORT, DRIVER_STICK_DEAD_ZONE);
-        // operatorStick = new AldrinJoystick(OPERATOR_STICK_PORT, OPERATOR_STICK_DEAD_ZONE);
         controller = new AldrinXboxController(CONTROLLER_PORT);
+
+        configureDefaultCommands();
+        configureButtons();
     }
 
     public static RobotManager getInstance() {

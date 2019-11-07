@@ -5,7 +5,7 @@ import com.team175.robot.subsystem.Limelight;
 /**
  * ConfigLimelightCameraMode switches the camera mode on the Limelight to the driver view or vision tracking view.
  */
-public class ConfigLimelightCameraMode extends CommandBase {
+public final class ConfigLimelightCameraMode extends CommandBase {
 
     private final Limelight limelight;
     private final boolean isTrackingMode;

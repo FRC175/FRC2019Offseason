@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  * Autopilot is the finest autonomous mode in existence.
  */
-public class Autopilot extends CommandGroup {
+public final class Autopilot extends CommandGroup {
 
     public Autopilot() {
         addSequential(new DriveTrajectory(Drive.getInstance(), "EPIC"));

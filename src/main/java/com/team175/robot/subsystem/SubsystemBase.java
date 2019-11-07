@@ -44,7 +44,7 @@ public abstract class SubsystemBase extends Subsystem {
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
 
-        if (!telemetry.isEmpty()) {
+        /*if (!telemetry.isEmpty()) {
             // Add data to builder filtered by data type
             telemetry.forEach((k, v) -> {
                 String subKey = "." + k;
@@ -65,7 +65,7 @@ public abstract class SubsystemBase extends Subsystem {
                     builder.addStringProperty(subKey, rawValue::toString, null);
                 }
             });
-        }
+        }*/
     }
 
     /**

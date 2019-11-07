@@ -15,8 +15,8 @@ public final class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         robotManager = RobotManager.getInstance();
-        autoChooser = AutoModeChooser.getInstance();
-        autoChooser.outputToDashboard();
+        /*autoChooser = AutoModeChooser.getInstance();
+        autoChooser.outputToDashboard();*/
     }
 
     @Override
@@ -34,8 +34,8 @@ public final class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        autoChooser.updateFromDashboard();
-        autoChooser.start();
+        /*autoChooser.updateFromDashboard();
+        autoChooser.start();*/
     }
 
     @Override
