@@ -4,11 +4,11 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team175.robot.util.DriveHelper;
 import com.team175.robot.util.model.Gains;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
@@ -28,7 +28,6 @@ public final class Drive extends SubsystemBase {
 
     private int leftSetpoint, rightSetpoint;
 
-    // TODO: Fix Talon SRX IDs
     private static final int LEFT_MASTER_PORT = 3;
     private static final int LEFT_SLAVE_PORT = 1;
     private static final int RIGHT_MASTER_PORT = 2;
@@ -55,7 +54,10 @@ public final class Drive extends SubsystemBase {
         configureTalons();
 
         driveHelper = new DriveHelper(leftMaster, rightMaster);
-        fatDriveHelper = new DifferentialDrive(leftMaster, rightMaster);
+        fatDriveHelper = new DifferentialDrive(
+                new SpeedControllerGroup(leftMaster, leftSlave),
+                new SpeedControllerGroup(rightMaster, rightSlave)
+        );
 
         configureTelemetry();
     }
@@ -123,10 +125,12 @@ public final class Drive extends SubsystemBase {
 
     public void arcadeDrive(double throttle, double turn) {
         fatDriveHelper.arcadeDrive(throttle, turn);
+        // driveHelper.arcadeDrive(throttle, turn);
     }
 
     public void cheesyDrive(double throttle, double turn, boolean isQuickTurn) {
         fatDriveHelper.curvatureDrive(throttle, turn, isQuickTurn);
+        // driveHelper.cheesyDrive(throttle, turn, isQuickTurn, false);
     }
 
     public void setBrakeMode(boolean enable) {
