@@ -6,7 +6,7 @@ package com.team175.robot.util;
  * over a simple socket that is then read and graphed. This utility visualizes motor movement in real time and allows
  * you to easily make fine adjustments to the gains.
  */
-public class MotorTuner {
+public final class MotorTuner {
 
     
 

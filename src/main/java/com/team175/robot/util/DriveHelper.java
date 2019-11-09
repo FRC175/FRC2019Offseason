@@ -1,26 +1,24 @@
 package com.team175.robot.util;
 
-import com.team175.robot.util.model.motorcontroller.MCControlMode;
-import com.team175.robot.util.model.motorcontroller.MotorController;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.FollowerType;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 /**
- * DriveHelper implements multiple different drive types (e.g., Cheesy Drive and Arcade Drive) to run on motor controllers.
+ * DriveHelper implements multiple different drive types (e.g., Cheesy Drive and Arcade Drive) to run on the Talon SRX.
  */
 public final class DriveHelper {
 
-    /**
-     * Motor controllers
-     */
-    private MotorController left, right;
+    // Talon SRXs
+    private TalonSRX left, right;
 
-    /**
-     * Cheesy Drive variables
-     */
+    // Cheesy Drive variables
     private double oldWheel = 0;
     private double quickStopAccumulator = 0;
     private double negInertiaAccumulator = 0;
 
-    // These factors determine how fast the wheel traverses the "non linear" sine curve.
+    // Cheesy Drive constants that determine how fast the wheel traverses the "non linear" sine curve
     private static final double HIGH_WHEEL_NON_LINEARITY = 0.65;
     private static final double LOW_WHEEL_NON_LINEARITY = 0.5;
     private static final double HIGH_NEG_INERTIA_SCALAR = 4.0;
@@ -35,12 +33,12 @@ public final class DriveHelper {
     private static final double QUICK_STOP_SCALAR = 5.0;
 
     /**
-     * Constructs a new DriveHelper.
+     * Constructs a new FatDriveHelper.
      *
-     * @param left  The master motor controller for the left drive motors
-     * @param right The master motor controller for the right drive motors
+     * @param left  The master Talon SRX for the left drive motors
+     * @param right The master Talon SRX for the right drive motors
      */
-    public DriveHelper(MotorController left, MotorController right) {
+    public DriveHelper(TalonSRX left, TalonSRX right) {
         this.left = left;
         this.right = right;
     }
@@ -149,36 +147,25 @@ public final class DriveHelper {
             rightPwm = -1.0;
         }
 
-        left.set(MCControlMode.PERCENT_OUT, leftPwm);
-        right.set(MCControlMode.PERCENT_OUT, rightPwm);
+        left.set(ControlMode.PercentOutput, leftPwm);
+        right.set(ControlMode.PercentOutput, rightPwm);
     }
 
     /**
      * Arcade drive using arbitrary feed forward.
      */
     public void arcadeDrive(double throttle, double turn) {
-        left.set(MCControlMode.PERCENT_OUT, throttle, turn);
-        right.set(MCControlMode.PERCENT_OUT, throttle, -turn);
+        left.set(ControlMode.PercentOutput, throttle, DemandType.ArbitraryFeedForward, +turn);
+        right.set(ControlMode.PercentOutput, throttle, DemandType.ArbitraryFeedForward, -turn);
     }
 
     /**
-     * An alternative way of performing arcade drive.
-     * <p>
-     * TODO: Remove
-     */
-    public void altAcradeDrive(double throttle, double turn) {
-        left.set(MCControlMode.PERCENT_OUT, limit(throttle + turn, 1));
-        right.set(MCControlMode.PERCENT_OUT, limit(throttle - turn, 1));
-    }
-
-    /**
-     * The arcade drive mode from the Differential Drive helper.
+     * The arcade drive mode from {@link edu.wpi.first.wpilibj.drive.DifferentialDrive}.
      *
      * @author Worcester Polytechnic Institute
      */
     public void worcesterArcadeDrive(double throttle, double turn) {
-        // Square the inputs (while preserving the sign) to increase fine control
-        // while permitting full power.
+        // Square the inputs (while preserving the sign) to increase fine control while permitting full power.
         throttle = Math.copySign(throttle * throttle, throttle);
         turn = Math.copySign(turn * turn, turn);
 
@@ -206,17 +193,20 @@ public final class DriveHelper {
             }
         }
 
-        left.set(MCControlMode.PERCENT_OUT, limit(leftMotorOutput, 1));
-        right.set(MCControlMode.PERCENT_OUT, limit(rightMotorOutput, 1));
+        left.set(ControlMode.PercentOutput, limit(leftMotorOutput, 1));
+        right.set(ControlMode.PercentOutput, limit(rightMotorOutput, 1));
     }
 
     /**
      * Forces robot to drive straight by using gyro. Must be using Pigeon gyro with tuned auxiliary PID.
+     *
+     * TODO: Get this to work
      */
-    /*public void straightDrive(double throttle) {
-        right.set(MCControlMode.PERCENT_OUT, throttle, DemandType.AuxPID, 0); // 0 degrees => straight
+    @Deprecated(since = "2019", forRemoval = true)
+    public void straightDrive(double throttle) {
+        right.set(ControlMode.PercentOutput, throttle, DemandType.AuxPID, 0); // 0 degrees => straight
         left.follow(right, FollowerType.AuxOutput1);
-    }*/
+    }
 
     /**
      * From Team254's Util class.

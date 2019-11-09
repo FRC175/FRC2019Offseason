@@ -1,27 +1,33 @@
 package com.team175.robot.command;
 
 import com.team175.robot.subsystem.Drive;
-import edu.wpi.first.wpilibj.command.Command;
 
-public class ArcadeDrive extends Command {
+import java.util.function.DoubleSupplier;
 
-    public ArcadeDrive(Drive drive) {
-        // requires(drive);
+/**
+ * ArcadeDrive
+ */
+public final class ArcadeDrive extends CommandBase {
+
+    private final Drive drive;
+    private final DoubleSupplier throttle;
+    private final DoubleSupplier turn;
+
+    public ArcadeDrive(Drive drive, DoubleSupplier throttle, DoubleSupplier turn) {
+        this.drive = drive;
+        this.throttle = throttle;
+        this.turn = turn;
+        addRequirements(this.drive);
     }
 
     @Override
-    protected void execute() {
-        Drive.getInstance().arcadeDrive(0, 0);
+    public void execute() {
+        drive.arcadeDrive(throttle.getAsDouble(), turn.getAsDouble());
     }
 
     @Override
-    protected boolean isFinished() {
-        return false;
-    }
-
-    @Override
-    protected void end() {
-        Drive.getInstance().setOpenLoop(0,0);
+    public void end(boolean interrupted) {
+        drive.setOpenLoop(0,0);
     }
 
 }
