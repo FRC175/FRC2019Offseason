@@ -73,6 +73,7 @@ public final class Drive extends SubsystemBase {
     private void configureTalons() {
         leftMaster.configFactoryDefault();
         leftMaster.setNeutralMode(NeutralMode.Coast);
+        rightMaster.setInverted(false);
         leftMaster.configMotionSCurveStrength(S_CURVE_STRENGTH);
         leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
         leftMaster.config_kP(0, GAINS.getKp());
@@ -90,6 +91,7 @@ public final class Drive extends SubsystemBase {
 
         rightMaster.configFactoryDefault();
         rightMaster.setNeutralMode(NeutralMode.Coast);
+        rightMaster.setInverted(true);
         rightMaster.configMotionSCurveStrength(S_CURVE_STRENGTH);
         rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
         rightMaster.config_kP(0, GAINS.getKp());
