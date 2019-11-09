@@ -13,13 +13,13 @@ public final class Limelight extends SubsystemBase {
     private double throttle, turn;
     private boolean isAtTarget;
 
-    // TODO: Calibrate wanted target area and area deadband
     private static final int WANTED_TARGET_AREA = 14;
     private static final int ROTATION_DEADBAND = 4;
     private static final double AREA_DEADBAND = 1.5;
     private static final double KP_THROTTLE = 0.2;
     private static final double KP_TURN = 0.05;
     private static final double MAX_THROTTLE = 0.8;
+    private static final double SEEK_TURN = 0.3;
 
     private static Limelight instance;
 
@@ -43,7 +43,7 @@ public final class Limelight extends SubsystemBase {
         telemetry.put("VerticalOffset", this::getVerticalOffset);
         telemetry.put("TargetArea", this::getTargetArea);
         telemetry.put("Rotation", this::getRotation);
-        telemetry.put("PipelineNum", this::getPipelineNumber);
+        telemetry.put("PipelineNum", this::getPipeline);
         telemetry.put("CalculatedThrottle", () -> throttle);
         telemetry.put("CalculatedTurn", () -> turn);
     }
@@ -72,7 +72,7 @@ public final class Limelight extends SubsystemBase {
         return table.getEntry("ts").getDouble(0);
     }
 
-    private int getPipelineNumber() {
+    private int getPipeline() {
         return (int) table.getEntry("getpipe").getDouble(0);
     }
 
@@ -89,7 +89,9 @@ public final class Limelight extends SubsystemBase {
     }
 
     public void setCameraMode(boolean isTrackingMode) {
-        table.getEntry("camMode").setNumber(isTrackingMode ? 0 : 1);
+        // 0 => Tracking Mode; 1 => Driver Mode
+        setPipeline(isTrackingMode ? 0 : 1);
+        // table.getEntry("camMode").setNumber(isTrackingMode ? 0 : 1);
     }
 
     public boolean isAtTarget() {
@@ -112,15 +114,12 @@ public final class Limelight extends SubsystemBase {
             logger.debug("IsAtTarget = {}", isAtTarget);
         } else {
             throttle = 0;
-            turn = 0;
-            isAtTarget = true;
-            logger.warn("NO TARGET DETECTED!!! Move near target.");
+            turn = SEEK_TURN;
+            isAtTarget = false;
+            logger.warn("NO TARGET DETECTED!!! Robot is turning in a circle until it sees a target.");
         }
 
-        return new double[] {
-                throttle,
-                turn
-        };
+        return new double[]{throttle, turn};
     }
 
     @Override

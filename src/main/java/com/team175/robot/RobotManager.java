@@ -20,7 +20,6 @@ public final class RobotManager {
     private final Drive drive;
     private final Limelight limelight;
     private final List<SubsystemBase> subsystems;
-    // private final Joystick driverStick, operatorStick;
     private final AldrinXboxController controller;
 
     private static RobotManager instance;
@@ -46,7 +45,6 @@ public final class RobotManager {
     }
 
     private void configureDefaultCommands() {
-        // TODO: Test GTA drive and consider replacing ArcadeDrive with CheesyDrive
         drive.setDefaultCommand(
                 new ArcadeDrive(
                         drive,
@@ -73,6 +71,7 @@ public final class RobotManager {
         new XboxButton(controller, DPad.LEFT).whenPressed(
                 new BlinkLimelightLED(limelight)
         );
+        // TODO: Add ability to stop tracking without disabling robot
         new XboxButton(controller, Button.X).whenPressed(
                 new DriveToVisionTarget(drive, limelight)
         );
