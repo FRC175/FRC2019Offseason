@@ -57,7 +57,7 @@ public final class RobotManager {
         );
         limelight.setDefaultCommand(
                 // Driver camera mode
-                new ConfigLimelightCameraMode(limelight, false)
+                new ConfigLimelightCameraMode(limelight, true)
         );
     }
 

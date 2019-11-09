@@ -14,12 +14,12 @@ public final class Limelight extends SubsystemBase {
     private boolean isAtTarget;
 
     // TODO: Calibrate wanted target area and area deadband
-    private static final int WANTED_TARGET_AREA = 0;
+    private static final int WANTED_TARGET_AREA = 14;
     private static final int ROTATION_DEADBAND = 4;
-    private static final int AREA_DEADBAND = 0;
+    private static final double AREA_DEADBAND = 1.5;
     private static final double KP_THROTTLE = 0.2;
     private static final double KP_TURN = 0.05;
-    private static final double MAX_THROTTLE = 0.7;
+    private static final double MAX_THROTTLE = 0.8;
 
     private static Limelight instance;
 
@@ -113,11 +113,14 @@ public final class Limelight extends SubsystemBase {
         } else {
             throttle = 0;
             turn = 0;
-            isAtTarget = false;
+            isAtTarget = true;
             logger.warn("NO TARGET DETECTED!!! Move near target.");
         }
 
-        return new double[]{throttle, turn};
+        return new double[] {
+                throttle,
+                turn
+        };
     }
 
     @Override

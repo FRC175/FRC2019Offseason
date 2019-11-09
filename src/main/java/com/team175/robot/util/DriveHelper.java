@@ -155,7 +155,7 @@ public final class DriveHelper {
      * Arcade drive using arbitrary feed forward.
      */
     public void arcadeDrive(double throttle, double turn) {
-        left.set(ControlMode.PercentOutput, throttle, DemandType.ArbitraryFeedForward, turn);
+        left.set(ControlMode.PercentOutput, throttle, DemandType.ArbitraryFeedForward, +turn);
         right.set(ControlMode.PercentOutput, throttle, DemandType.ArbitraryFeedForward, -turn);
     }
 

@@ -2,11 +2,14 @@ package com.team175.robot.subsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team175.robot.util.DriveHelper;
 import com.team175.robot.util.model.Gains;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.followers.EncoderFollower;
@@ -17,8 +20,9 @@ import jaci.pathfinder.followers.EncoderFollower;
  */
 public final class Drive extends SubsystemBase {
 
-    private final TalonSRX leftMaster, leftSlave, rightMaster, rightSlave;
+    private final WPI_TalonSRX leftMaster, leftSlave, rightMaster, rightSlave;
     private final DriveHelper driveHelper;
+    private final DifferentialDrive fatDriveHelper;
     private final PigeonIMU pigeon;
     private final EncoderFollower leftTrajectoryFollower, rightTrajectoryFollower;
 
@@ -40,16 +44,19 @@ public final class Drive extends SubsystemBase {
     private static Drive instance;
 
     private Drive() {
-        leftMaster = new TalonSRX(LEFT_MASTER_PORT);
-        leftSlave = new TalonSRX(LEFT_SLAVE_PORT);
-        rightMaster = new TalonSRX(RIGHT_MASTER_PORT);
-        rightSlave = new TalonSRX(RIGHT_SLAVE_PORT);
-        driveHelper = new DriveHelper(leftMaster, rightMaster);
+        leftMaster = new WPI_TalonSRX(LEFT_MASTER_PORT);
+        leftSlave = new WPI_TalonSRX(LEFT_SLAVE_PORT);
+        rightMaster = new WPI_TalonSRX(RIGHT_MASTER_PORT);
+        rightSlave = new WPI_TalonSRX(RIGHT_SLAVE_PORT);
         pigeon = new PigeonIMU(PIGEON_PORT);
         leftTrajectoryFollower = new EncoderFollower();
         rightTrajectoryFollower = new EncoderFollower();
 
         configureTalons();
+
+        driveHelper = new DriveHelper(leftMaster, rightMaster);
+        fatDriveHelper = new DifferentialDrive(leftMaster, rightMaster);
+
         configureTelemetry();
     }
 
@@ -77,6 +84,7 @@ public final class Drive extends SubsystemBase {
         leftSlave.configFactoryDefault();
         leftSlave.setNeutralMode(NeutralMode.Coast);
         leftSlave.follow(leftMaster);
+        leftSlave.setInverted(InvertType.FollowMaster);
 
         rightMaster.configFactoryDefault();
         rightMaster.setNeutralMode(NeutralMode.Coast);
@@ -93,6 +101,7 @@ public final class Drive extends SubsystemBase {
         rightSlave.configFactoryDefault();
         rightSlave.setNeutralMode(NeutralMode.Coast);
         rightSlave.follow(rightMaster);
+        rightSlave.setInverted(InvertType.FollowMaster);
     }
 
     private void configureTelemetry() {
@@ -113,11 +122,11 @@ public final class Drive extends SubsystemBase {
     }
 
     public void arcadeDrive(double throttle, double turn) {
-        driveHelper.arcadeDrive(throttle, turn);
+        fatDriveHelper.arcadeDrive(throttle, turn);
     }
 
     public void cheesyDrive(double throttle, double turn, boolean isQuickTurn) {
-        driveHelper.cheesyDrive(throttle, turn, isQuickTurn, true);
+        fatDriveHelper.curvatureDrive(throttle, turn, isQuickTurn);
     }
 
     public void setBrakeMode(boolean enable) {
