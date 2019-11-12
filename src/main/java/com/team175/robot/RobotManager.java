@@ -71,8 +71,7 @@ public final class RobotManager {
         new XboxButton(controller, DPad.LEFT).whenPressed(
                 new BlinkLimelightLED(limelight)
         );
-        // TODO: Add ability to stop tracking without disabling robot
-        new XboxButton(controller, Button.X).whenPressed(
+        new XboxButton(controller, Button.X).whileHeld(
                 new DriveToVisionTarget(drive, limelight)
         );
     }
