@@ -27,9 +27,12 @@ public final class DriveToVisionTarget extends CommandBase {
 
     @Override
     public void execute() {
-        double[] driveSignal = limelight.calculateTargetDrive();
+        /*double[] driveSignal = limelight.calculateTargetDrive();
         // driveSignal[0] => Throttle, driveSignal[1] => Turn
-        drive.arcadeDrive(driveSignal[0], driveSignal[1]);
+        drive.arcadeDrive(driveSignal[0], driveSignal[1]);*/
+
+        limelight.calculateTargetDrive();
+        drive.arcadeDrive(limelight.getThrottle(), limelight.getTurn());
     }
 
     @Override
