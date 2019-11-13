@@ -4,13 +4,13 @@ import com.team175.robot.command.*;
 import com.team175.robot.subsystem.Drive;
 import com.team175.robot.subsystem.SubsystemBase;
 import com.team175.robot.subsystem.Limelight;
-import com.team175.robot.util.model.AldrinXboxController;
-import com.team175.robot.util.model.XboxButton;
+import com.team175.robot.model.AldrinXboxController;
+import com.team175.robot.model.XboxButton;
 import edu.wpi.first.wpilibj.GenericHID;
 
 import java.util.List;
 
-import static com.team175.robot.util.model.AldrinXboxController.*;
+import static com.team175.robot.model.AldrinXboxController.*;
 
 /**
  * RobotManager

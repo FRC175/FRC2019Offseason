@@ -7,7 +7,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team175.robot.util.DriveHelper;
-import com.team175.robot.util.model.Gains;
+import com.team175.robot.model.Gains;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import jaci.pathfinder.Pathfinder;

@@ -1,4 +1,4 @@
-package com.team175.robot.util.model;
+package com.team175.robot.model;
 
 /**
  * Gains holds PID gains (Kp, Ki, Kd, Kf) and acceleration and cruise velocity data for closed loop control.

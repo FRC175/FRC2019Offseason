@@ -1,6 +1,6 @@
 package com.team175.robot.util;
 
-import com.team175.robot.util.model.PeriodicTask;
+import com.team175.robot.model.PeriodicTask;
 import edu.wpi.first.wpilibj.Notifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

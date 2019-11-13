@@ -1,4 +1,4 @@
-package com.team175.robot.util.model;
+package com.team175.robot.model;
 
 /**
  * PeriodicTask is the base for objects that run tasks periodically.
