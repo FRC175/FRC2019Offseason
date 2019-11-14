@@ -15,7 +15,7 @@ public final class Limelight extends SubsystemBase {
     private final BetterPIDController turnController;
 
     private double throttle, turn;
-    // private boolean isAtTarget;
+    private boolean isAtTarget;
 
     private static final double DESIRED_ROTATION = 0; // Center of the screen
     private static final double DESIRED_TARGET_AREA = 14;
@@ -116,12 +116,15 @@ public final class Limelight extends SubsystemBase {
             throttle = throttleController.calculate(getTargetArea(), DESIRED_TARGET_AREA);
             turn = turnController.calculate(getHorizontalOffset(), DESIRED_ROTATION); // TODO: Make constant
 
+            isAtTarget = throttleController.atSetpoint() && turnController.atSetpoint();
+
             logger.debug("Throttle = {}", throttle);
             logger.debug("Turn = {}", turn);
             logger.debug("IsAtTarget = {}", isAtTarget());
         } else {
             throttle = 0;
             turn = SEEK_TURN;
+            isAtTarget = false;
             logger.warn("NO TARGET DETECTED!!! Robot is turning in a circle until it sees a target.");
         }
     }
@@ -135,16 +138,7 @@ public final class Limelight extends SubsystemBase {
     }
 
     public boolean isAtTarget() {
-        // return isAtTarget;
-        return isAtDesiredArea() && isAtDesiredRotation();
-    }
-
-    public boolean isAtDesiredArea() {
-        return throttleController.atSetpoint();
-    }
-
-    public boolean isAtDesiredRotation() {
-        return turnController.atSetpoint();
+        return isAtTarget;
     }
 
     /*public double[] calculateTargetDrive() {

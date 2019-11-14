@@ -42,7 +42,7 @@ public class RotateToVisionTarget extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return limelight.isAtDesiredRotation();
+        return limelight.isAtTarget();
     }
 
 }
