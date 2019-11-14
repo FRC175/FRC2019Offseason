@@ -15,10 +15,11 @@ public final class Limelight extends SubsystemBase {
     private final BetterPIDController turnController;
 
     private double throttle, turn;
-    private boolean isAtTarget;
+    // private boolean isAtTarget;
 
-    private static final int WANTED_TARGET_AREA = 14;
-    private static final int ROTATION_DEADBAND = 4;
+    private static final double DESIRED_ROTATION = 0; // Center of the screen
+    private static final double DESIRED_TARGET_AREA = 14;
+    private static final double ROTATION_DEADBAND = 4;
     private static final double AREA_DEADBAND = 1.5;
     /*private static final double KP_THROTTLE = 0.2;
     private static final double KP_TURN = 0.05;
@@ -81,7 +82,7 @@ public final class Limelight extends SubsystemBase {
     }
 
     private double getTargetAreaError() {
-        return WANTED_TARGET_AREA - getTargetArea();
+        return DESIRED_TARGET_AREA - getTargetArea();
     }
 
     private double getRotation() {
@@ -110,6 +111,21 @@ public final class Limelight extends SubsystemBase {
         // table.getEntry("camMode").setNumber(isTrackingMode ? 0 : 1);
     }
 
+    public void calculateTargetDrive() {
+        if (isTargetDetected()) {
+            throttle = throttleController.calculate(getTargetArea(), DESIRED_TARGET_AREA);
+            turn = turnController.calculate(getHorizontalOffset(), DESIRED_ROTATION); // TODO: Make constant
+
+            logger.debug("Throttle = {}", throttle);
+            logger.debug("Turn = {}", turn);
+            logger.debug("IsAtTarget = {}", isAtTarget());
+        } else {
+            throttle = 0;
+            turn = SEEK_TURN;
+            logger.warn("NO TARGET DETECTED!!! Robot is turning in a circle until it sees a target.");
+        }
+    }
+
     public double getThrottle() {
         return throttle;
     }
@@ -119,28 +135,16 @@ public final class Limelight extends SubsystemBase {
     }
 
     public boolean isAtTarget() {
-        return isAtTarget;
+        // return isAtTarget;
+        return isAtDesiredArea() && isAtDesiredRotation();
     }
 
-    public void calculateTargetDrive() {
-        if (isTargetDetected()) {
-            // Proportional throttle based on ta
-            // min() prevents robot from driving too fast and crashing
-            throttle = throttleController.calculate(getTargetArea(), WANTED_TARGET_AREA);
-            // Proportional turn based on tx
-            turn = turnController.calculate(getHorizontalOffset(), 0); // TODO: Make constant
+    public boolean isAtDesiredArea() {
+        return throttleController.atSetpoint();
+    }
 
-            isAtTarget = turnController.atSetpoint() && throttleController.atSetpoint();
-
-            logger.debug("Throttle = {}", throttle);
-            logger.debug("Turn = {}", turn);
-            logger.debug("IsAtTarget = {}", isAtTarget);
-        } else {
-            throttle = 0;
-            turn = SEEK_TURN;
-            isAtTarget = false;
-            logger.warn("NO TARGET DETECTED!!! Robot is turning in a circle until it sees a target.");
-        }
+    public boolean isAtDesiredRotation() {
+        return turnController.atSetpoint();
     }
 
     /*public double[] calculateTargetDrive() {
