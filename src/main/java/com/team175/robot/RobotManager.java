@@ -9,6 +9,8 @@ import com.team175.robot.model.XboxButton;
 import edu.wpi.first.wpilibj.GenericHID;
 
 import java.util.List;
+import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 import static com.team175.robot.model.AldrinXboxController.*;
 
@@ -60,19 +62,37 @@ public final class RobotManager {
     }
 
     private void configureButtons() {
+        new XboxButton(controller, Button.A).whileHeld(
+                new CheesyDrive(
+                        drive,
+                        // Operate throttle with RT and LT like in games (GTA drive)
+                        () -> controller.getTriggerAxis(GenericHID.Hand.kRight) - controller.getTriggerAxis(GenericHID.Hand.kLeft),
+                        () -> controller.getX(GenericHID.Hand.kLeft),
+                        // Press right bumper to active quick turn
+                        () -> controller.getBumper(Hand.kRight)
+                )
+        );
         new XboxButton(controller, DPad.UP).whenPressed(
-                // Turn on Limelight LED
-                new ConfigLimelightLED(limelight, true)
+                new TurnOnLimelightLED(limelight)
         );
         new XboxButton(controller, DPad.DOWN).whenPressed(
-                // Turn off Limelight LED
-                new ConfigLimelightLED(limelight, false)
+                new TurnOffLimelightLED(limelight)
         );
         new XboxButton(controller, DPad.LEFT).whenPressed(
                 new BlinkLimelightLED(limelight)
         );
+        new XboxButton(controller, DPad.RIGHT).toggleWhenPressed(
+                new ToggleLimelightCameraMode(limelight)
+        );
         new XboxButton(controller, Button.X).whileHeld(
                 new DriveToVisionTarget(drive, limelight)
+        );
+        new XboxButton(controller, Button.Y).whileHeld(
+                new RotateToVisionTarget(
+                        drive,
+                        limelight,
+                        () -> controller.getTriggerAxis(GenericHID.Hand.kRight) - controller.getTriggerAxis(GenericHID.Hand.kLeft)
+                )
         );
     }
 

@@ -65,6 +65,10 @@ public final class Limelight extends SubsystemBase {
         table.getEntry("pipeline").setNumber(pipelineNum);
     }
 
+    private void setLED(boolean enable) {
+        table.getEntry("ledMode").setNumber(enable ? 3 : 1);
+    }
+
     private boolean isTargetDetected() {
         return table.getEntry("tv").getDouble(0) == 1;
     }
@@ -93,8 +97,12 @@ public final class Limelight extends SubsystemBase {
         return (int) table.getEntry("getpipe").getDouble(0);
     }
 
-    public void setLED(boolean enable) {
-        table.getEntry("ledMode").setNumber(enable ? 3 : 1);
+    public void turnOnLED() {
+        setLED(true);
+    }
+
+    public void turnOffLED() {
+        setLED(false);
     }
 
     public void blinkLED() {
@@ -107,8 +115,8 @@ public final class Limelight extends SubsystemBase {
 
     public void setCameraMode(boolean isTrackingMode) {
         // 0 => Tracking Mode; 1 => Driver Mode
-        setPipeline(isTrackingMode ? 0 : 1);
-        // table.getEntry("camMode").setNumber(isTrackingMode ? 0 : 1);
+        // setPipeline(isTrackingMode ? 0 : 1);
+        table.getEntry("camMode").setNumber(isTrackingMode ? 0 : 1);
     }
 
     public void calculateTargetDrive() {

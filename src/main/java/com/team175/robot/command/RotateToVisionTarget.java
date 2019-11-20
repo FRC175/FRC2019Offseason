@@ -24,7 +24,7 @@ public class RotateToVisionTarget extends CommandBase {
     @Override
     public void initialize() {
         limelight.setCameraMode(true);
-        limelight.setLED(true);
+        limelight.turnOffLED();
         drive.setOpenLoop(0, 0);
     }
 

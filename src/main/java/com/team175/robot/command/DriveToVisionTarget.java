@@ -21,7 +21,7 @@ public final class DriveToVisionTarget extends CommandBase {
     @Override
     public void initialize() {
         limelight.setCameraMode(true);
-        limelight.setLED(true);
+        limelight.turnOnLED();
         drive.setOpenLoop(0, 0);
     }
 

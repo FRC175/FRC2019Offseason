@@ -126,13 +126,13 @@ public final class Drive extends SubsystemBase {
     }
 
     public void arcadeDrive(double throttle, double turn) {
-        fatDriveHelper.arcadeDrive(throttle, turn);
-        // driveHelper.arcadeDrive(throttle, turn);
+        // fatDriveHelper.arcadeDrive(throttle, turn);
+        driveHelper.arcadeDrive(throttle, turn);
     }
 
     public void cheesyDrive(double throttle, double turn, boolean isQuickTurn) {
-        fatDriveHelper.curvatureDrive(throttle, turn, isQuickTurn);
-        // driveHelper.cheesyDrive(throttle, turn, isQuickTurn, false);
+        // fatDriveHelper.curvatureDrive(throttle, turn, isQuickTurn);
+        driveHelper.cheesyDrive(throttle, turn, isQuickTurn, false);
     }
 
     public void setBrakeMode(boolean enable) {
