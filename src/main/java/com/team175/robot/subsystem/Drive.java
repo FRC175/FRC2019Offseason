@@ -22,7 +22,6 @@ public final class Drive extends SubsystemBase {
 
     private final WPI_TalonSRX leftMaster, leftSlave, rightMaster, rightSlave;
     private final DriveHelper driveHelper;
-    private final DifferentialDrive fatDriveHelper;
     private final PigeonIMU pigeon;
     private final EncoderFollower leftTrajectoryFollower, rightTrajectoryFollower;
 
@@ -54,10 +53,6 @@ public final class Drive extends SubsystemBase {
         configureTalons();
 
         driveHelper = new DriveHelper(leftMaster, rightMaster);
-        fatDriveHelper = new DifferentialDrive(
-                new SpeedControllerGroup(leftMaster, leftSlave),
-                new SpeedControllerGroup(rightMaster, rightSlave)
-        );
 
         configureTelemetry();
     }
@@ -126,13 +121,13 @@ public final class Drive extends SubsystemBase {
     }
 
     public void arcadeDrive(double throttle, double turn) {
-        fatDriveHelper.arcadeDrive(throttle, turn);
-        // driveHelper.arcadeDrive(throttle, turn);
+        // fatDriveHelper.arcadeDrive(throttle, turn);
+        driveHelper.arcadeDrive(throttle, turn);
     }
 
     public void cheesyDrive(double throttle, double turn, boolean isQuickTurn) {
-        fatDriveHelper.curvatureDrive(throttle, turn, isQuickTurn);
-        // driveHelper.cheesyDrive(throttle, turn, isQuickTurn, false);
+        // fatDriveHelper.curvatureDrive(throttle, turn, isQuickTurn);
+        driveHelper.cheesyDrive(throttle, turn, isQuickTurn, false);
     }
 
     public void setBrakeMode(boolean enable) {

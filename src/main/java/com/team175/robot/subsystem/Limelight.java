@@ -19,13 +19,13 @@ public final class Limelight extends SubsystemBase {
 
     private static final int WANTED_TARGET_AREA = 14;
     private static final int ROTATION_DEADBAND = 4;
-    private static final double AREA_DEADBAND = 1.5;
+    private static final double AREA_DEADBAND = 1.7;
     /*private static final double KP_THROTTLE = 0.2;
     private static final double KP_TURN = 0.05;
     private static final double MAX_THROTTLE = 0.8;*/
     private static final double SEEK_TURN = 0.3;
-    private static final Gains THROTTLE_GAINS = new Gains(0.2, 0, 0, 0, 0, 0);
-    private static final Gains TURN_GAINS = new Gains(0.05, 0, 0, 0, 0, 0);
+    private static final Gains THROTTLE_GAINS = new Gains(0.05, 0, 0, 0, 0, 0);
+    private static final Gains TURN_GAINS = new Gains(-0.02, 0, 0, 0, 0, 0);
 
     private static Limelight instance;
 
@@ -37,6 +37,9 @@ public final class Limelight extends SubsystemBase {
         // TODO: Maybe add input range
         throttleController.setTolerance(AREA_DEADBAND);
         turnController.setTolerance(ROTATION_DEADBAND);
+
+        throttleController.enableContinuousInput(0, 100);
+        turnController.enableContinuousInput(-30, 30);
 
         configureTelemetry();
     }
@@ -137,8 +140,10 @@ public final class Limelight extends SubsystemBase {
             logger.debug("IsAtTarget = {}", isAtTarget);
         } else {
             throttle = 0;
-            turn = SEEK_TURN;
-            isAtTarget = false;
+            // turn = SEEK_TURN;
+            turn = 0;
+            // isAtTarget = false;
+            isAtTarget = true;
             logger.warn("NO TARGET DETECTED!!! Robot is turning in a circle until it sees a target.");
         }
     }

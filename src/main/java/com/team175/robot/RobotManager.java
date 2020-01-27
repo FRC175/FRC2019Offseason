@@ -46,11 +46,12 @@ public final class RobotManager {
 
     private void configureDefaultCommands() {
         drive.setDefaultCommand(
-                new ArcadeDrive(
+                new CheesyDrive(
                         drive,
                         // Operate throttle with RT and LT like in games (GTA drive)
                         () -> controller.getTriggerAxis(GenericHID.Hand.kRight) - controller.getTriggerAxis(GenericHID.Hand.kLeft),
-                        () -> controller.getX(GenericHID.Hand.kLeft)
+                        () -> controller.getX(GenericHID.Hand.kLeft),
+                        () -> controller.getBumper(Hand.kRight)
                 )
         );
         limelight.setDefaultCommand(
@@ -71,7 +72,10 @@ public final class RobotManager {
         new XboxButton(controller, DPad.LEFT).whenPressed(
                 new BlinkLimelightLED(limelight)
         );
-        new XboxButton(controller, Button.X).whileHeld(
+        new XboxButton(controller, DPad.RIGHT).whenPressed(
+                new ConfigLimelightCameraMode(limelight,false)
+        );
+        new XboxButton(controller, Button.X).whenPressed(
                 new DriveToVisionTarget(drive, limelight)
         );
     }

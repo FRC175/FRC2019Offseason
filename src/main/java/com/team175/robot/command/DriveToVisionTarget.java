@@ -2,6 +2,7 @@ package com.team175.robot.command;
 
 import com.team175.robot.subsystem.Drive;
 import com.team175.robot.subsystem.Limelight;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * DriveToTarget uses the limelight to continuously calculate the throttle and turn needed to reach the retro reflective
@@ -23,6 +24,7 @@ public final class DriveToVisionTarget extends CommandBase {
         limelight.setCameraMode(true);
         limelight.setLED(true);
         drive.setOpenLoop(0, 0);
+        // Timer.delay(1);
     }
 
     @Override
@@ -38,7 +40,8 @@ public final class DriveToVisionTarget extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         limelight.setCameraMode(false);
-        limelight.defaultLED();
+        // limelight.defaultLED();
+        // limelight.setLED(false);
     }
 
     @Override
