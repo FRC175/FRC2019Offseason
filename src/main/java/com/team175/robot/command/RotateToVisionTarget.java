@@ -2,46 +2,42 @@ package com.team175.robot.command;
 
 import com.team175.robot.subsystem.Drive;
 import com.team175.robot.subsystem.Limelight;
-import edu.wpi.first.wpilibj.Timer;
+
+import java.util.function.DoubleSupplier;
 
 /**
- * DriveToTarget uses the limelight to continuously calculate the throttle and turn needed to reach the retro reflective
- * tape targets and feeds the outputs into the drive motors.
+ * RotateToVisionTarget
  */
-public final class DriveToVisionTarget extends CommandBase {
+public class RotateToVisionTarget extends CommandBase {
 
     private final Drive drive;
     private final Limelight limelight;
+    private final DoubleSupplier throttle;
 
-    public DriveToVisionTarget(Drive drive, Limelight limelight) {
+    public RotateToVisionTarget(Drive drive, Limelight limelight, DoubleSupplier throttle) {
         this.drive = drive;
         this.limelight = limelight;
+        this.throttle = throttle;
         addRequirements(this.drive, this.limelight);
     }
 
     @Override
     public void initialize() {
         limelight.setCameraMode(true);
-        limelight.turnOnLED();
+        limelight.turnOffLED();
         drive.setOpenLoop(0, 0);
-        // Timer.delay(1);
     }
 
     @Override
     public void execute() {
-        /*double[] driveSignal = limelight.calculateTargetDrive();
-        // driveSignal[0] => Throttle, driveSignal[1] => Turn
-        drive.arcadeDrive(driveSignal[0], driveSignal[1]);*/
-
         limelight.calculateTargetDrive();
-        drive.arcadeDrive(limelight.getThrottle(), limelight.getTurn());
+        drive.arcadeDrive(throttle.getAsDouble(), limelight.getTurn());
     }
 
     @Override
     public void end(boolean interrupted) {
         limelight.setCameraMode(false);
-        // limelight.defaultLED();
-        // limelight.setLED(false);
+        limelight.defaultLED();
     }
 
     @Override
